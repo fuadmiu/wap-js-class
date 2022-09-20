@@ -1,22 +1,29 @@
 class CheckingAccount extends Account {
     constructor(number, overdraft) {
-        super(number);
-        this._overdraft = overdraft;
+      super(number);
+      this._overdraft = overdraft;
     }
-
-    get overdraft() {
-        return this._overdraft;
+    getOverdraft() {
+      return this._overdraft;
     }
-
-    set overdraft(overdraft) {
-        this._overdraft = overdraft;
+    setOverdraft(overdraft) {
+      this._overdraft = overdraft;
     }
-
     withdraw(amount) {
-        // to be implemented         
+      if (super._balance - amount >= -this._overdraft) {
+        throw Error("amount is exceeding the overdraft limit");
+      } else {
+        super._balance -= amount;
+      }
     }
-
     toString() {
-        return "Account " + this._number + ": overdraft limit " + this._overdraft + ": balance " + this._balance;
+      return super.toString() + "\n" + "Overdraft Amount: " + this._overdraft;
     }
-}
+    endOfMonth() {
+      if (super.balance > 0) {
+        return this.toString();
+      } else {
+        return "Warning, low balance CheckingAccount " + this.toString();
+      }
+    }
+  }
